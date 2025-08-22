@@ -9,7 +9,7 @@ Witness the second law of thermodynamics in beautiful, tangible form. The Entrop
 
 As the lamp operates, watch as ordered structures give way to increasingly random distributions of color and temperature, perfectly illustrating the concept of entropy increase. The patterns never repeat exactly, making each moment a unique glimpse into the fundamental tendency of the universe toward disorder.
 
-**Features:**
+## Features
 - Temperature-sensitive liquid crystal display
 - LED heat source with variable intensity
 - Real-time entropy visualization

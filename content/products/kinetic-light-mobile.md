@@ -9,7 +9,8 @@ The Kinetic Light Mobile transforms air currents into a mesmerizing dance of lig
 
 As gentle air currents set the mobile in motion, the LEDs create flowing patterns of light that project onto surrounding surfaces. The interplay between kinetic energy and photonic display demonstrates principles of angular momentum, gyroscopic precession, and energy transfer in a stunning visual format.
 
-**Features:**
+## Features
+
 - Precision-balanced multi-tier design
 - Motion-activated LED arrays
 - Gyroscopic stabilization elements

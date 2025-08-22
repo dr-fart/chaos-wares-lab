@@ -9,7 +9,7 @@ Experience the raw beauty of electrical discharge with our Interactive Plasma Ba
 
 The plasma filaments follow the path of least resistance, creating ever-changing patterns that illustrate fundamental principles of electricity, magnetism, and gas physics. Touch the surface to direct the plasma streams, or bring metal objects near to watch the arcs reach out in fascinating displays of electromagnetic attraction.
 
-**Features:**
+## Features
 - High-frequency Tesla coil generator
 - Touch-sensitive plasma response
 - Multiple gas mixture options

@@ -9,7 +9,7 @@ The Turbulent Fluid Vortex demonstrates one of fluid dynamics' most fascinating 
 
 Watch as smooth, predictable flow patterns suddenly break down into complex, swirling turbulence. The adjustable flow rate lets you explore the critical threshold where order gives way to chaos, illustrating fundamental principles that govern everything from blood flow to atmospheric dynamics.
 
-**Features:**
+## Features
 - Variable flow rate control
 - High-clarity polycarbonate chamber
 - Precision-engineered vortex generator

@@ -9,7 +9,7 @@ The Chaotic Double Pendulum is our flagship demonstration of sensitive dependenc
 
 Watch as tiny differences in starting position lead to dramatically different trajectories. The pendulum traces intricate, never-repeating patterns that exemplify chaos theory's most famous principle: the butterfly effect. Each swing is a unique journey through phase space, creating hypnotic patterns that captivate viewers for hours.
 
-**Features:**
+## Features
 - Precision-machined aluminum construction
 - Low-friction bearings for extended motion
 - Adjustable release mechanism

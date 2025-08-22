@@ -9,7 +9,7 @@ The Ant Colony Habitat is our most sophisticated demonstration of emergent behav
 
 Watch as thousands of individual ants, following basic local rules, create sophisticated tunnel networks, efficient foraging patterns, and adaptive responses to environmental changes. The habitat includes observation chambers, feeding systems, and environmental controls that let you study emergence, self-organization, and collective decision-making in action.
 
-**Features:**
+## Features
 - Multi-chamber habitat system
 - Climate-controlled environment
 - Observation windows with magnification

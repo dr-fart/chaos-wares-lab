@@ -121,15 +121,33 @@ a:hover {
   justify-content: flex-end;
 }
 
+#chaos-logo {
+  display: block;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(0, 245, 212, 0.1), transparent 70%);
+}
+
 .nav-logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: var(--text-heading);
-  white-space: nowrap;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.nav-logo:hover {
+  color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+.logo-text {
+  margin-left: 0.75rem;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .nav-menu {
@@ -211,14 +229,26 @@ main {
 }
 
 /* Hero Section */
+.hero-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
 .hero {
   position: relative;
-  padding: 6rem 0;
-  text-align: center;
-  overflow: hidden;
-  min-height: 500px;
+  min-height: 60vh;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, #1a2332 100%);
 }
 
 .hero-background {
@@ -228,12 +258,6 @@ main {
   width: 100%;
   height: 100%;
   z-index: 1;
-}
-
-.hero-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .hero-content {
@@ -303,6 +327,8 @@ main {
 .cta-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0, 245, 212, 0.4);
+  background: linear-gradient(135deg, var(--accent-primary), #00D4B8);
+  color: var(--bg-primary);
 }
 
 /* Product Gallery */
@@ -415,6 +441,8 @@ main {
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 245, 212, 0.3);
+  background: linear-gradient(135deg, var(--accent-primary), #00D4B8);
+  color: var(--bg-primary);
 }
 
 .btn-secondary {
@@ -772,7 +800,7 @@ main {
 }
 
 .content-section {
-  padding: 2rem 0;
+  padding: 1rem 0;
 }
 
 .single-product {
@@ -983,7 +1011,7 @@ main {
 .card-button {
   display: inline-block;
   background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-  color: white;
+  color: var(--bg-primary);
   text-decoration: none;
   padding: 0.875rem 2rem;
   border-radius: 2rem;
@@ -996,7 +1024,8 @@ main {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 245, 212, 0.4);
   text-decoration: none;
-  color: white;
+  background: linear-gradient(135deg, var(--accent-primary), #00D4B8);
+  color: var(--bg-primary);
 }
 
 @media (max-width: 768px) {
@@ -1029,5 +1058,140 @@ main {
   
   .gallery-image-container {
     height: 200px;
+  }
+}
+
+/* Physics Gallery */
+.physics-gallery {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.simulation-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.simulation-canvas {
+  width: 180px;
+  height: 180px;
+  border: 1px solid rgba(0, 245, 212, 0.3);
+  border-radius: 8px;
+  background: rgba(26, 35, 50, 0.2);
+  backdrop-filter: blur(2px);
+}
+
+.simulation-label {
+  font-size: 0.8rem;
+  color: var(--accent-primary);
+  text-align: center;
+  opacity: 0.8;
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .physics-gallery {
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .simulation-canvas {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .simulation-label {
+    font-size: 0.7rem;
+  }
+}
+
+/* Physics Showcase Section */
+.physics-showcase {
+  padding: 4rem 0;
+  background: linear-gradient(135deg, #1a2332 0%, var(--bg-primary) 100%);
+  text-align: center;
+}
+
+.physics-showcase h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.physics-showcase p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 3rem;
+}
+
+/* Physics Gallery */
+.physics-gallery {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.simulation-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.simulation-canvas {
+  width: 200px;
+  height: 200px;
+  border: 2px solid var(--accent-primary);
+  border-radius: 12px;
+  background: rgba(26, 35, 50, 0.8);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 8px 32px rgba(0, 245, 212, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.simulation-canvas:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 245, 212, 0.3);
+}
+
+.simulation-label {
+  font-size: 1rem;
+  color: var(--accent-primary);
+  text-align: center;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+  .physics-gallery {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .simulation-canvas {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .simulation-label {
+    font-size: 0.9rem;
   }
 }

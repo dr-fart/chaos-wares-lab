@@ -9,7 +9,7 @@ The Rippling Water Caustics device creates the enchanting light patterns you see
 
 The interplay between fluid motion and light refraction creates hypnotic displays that demonstrate Snell's law, wave optics, and the mathematics of caustic curves. Each ripple bends light in unique ways, creating patterns that are both scientifically fascinating and aesthetically stunning.
 
-**Features:**
+## Features
 - Precision water ripple generation
 - High-intensity LED projection system
 - Adjustable caustic intensity

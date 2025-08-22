@@ -7,6 +7,10 @@
     <meta name="description" content="A suspended symphony of motion and illumination">
     
     
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+    
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,34 +25,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="../../" class="nav-logo">
-                <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#FF7B00;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    
-                    <circle cx="30" cy="40" r="20" fill="none" stroke="url(#waveGradient)" stroke-width="2" opacity="0.8">
-                        <animate attributeName="r" values="20;25;20" dur="2s" repeatCount="indefinite"/>
-                        <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite"/>
-                    </circle>
-                    <circle cx="70" cy="60" r="15" fill="none" stroke="url(#waveGradient)" stroke-width="2" opacity="0.6">
-                        <animate attributeName="r" values="15;22;15" dur="2.5s" repeatCount="indefinite"/>
-                        <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2.5s" repeatCount="indefinite"/>
-                    </circle>
-                    
-                    <circle cx="50" cy="50" r="4" fill="#00F5D4">
-                        <animate attributeName="fill" values="#00F5D4;#FF7B00;#00F5D4" dur="3s" repeatCount="indefinite"/>
-                    </circle>
-                    
-                    <path d="M20,20 Q50,30 80,40" fill="none" stroke="#00F5D4" stroke-width="1" opacity="0.5">
-                        <animate attributeName="opacity" values="0.5;0.8;0.3;0.5" dur="2s" repeatCount="indefinite"/>
-                    </path>
-                    <path d="M20,80 Q50,70 80,60" fill="none" stroke="#FF7B00" stroke-width="1" opacity="0.4">
-                        <animate attributeName="opacity" values="0.4;0.7;0.2;0.4" dur="2.3s" repeatCount="indefinite"/>
-                    </path>
-                </svg>
+                <canvas id="chaos-logo" width="40" height="40"></canvas>
                 <span class="logo-text">Chaos Wares</span>
             </a>
             
@@ -89,7 +66,7 @@
             <div class="single-product-description">
                 <p>The Kinetic Light Mobile transforms air currents into a mesmerizing dance of light and shadow. This carefully balanced sculpture features multiple tiers of reflective elements that rotate independently, each embedded with micro-LEDs that respond to the mobile&rsquo;s motion.</p>
 <p>As gentle air currents set the mobile in motion, the LEDs create flowing patterns of light that project onto surrounding surfaces. The interplay between kinetic energy and photonic display demonstrates principles of angular momentum, gyroscopic precession, and energy transfer in a stunning visual format.</p>
-<p><strong>Features:</strong></p>
+<h2 id="features">Features</h2>
 <ul>
 <li>Precision-balanced multi-tier design</li>
 <li>Motion-activated LED arrays</li>

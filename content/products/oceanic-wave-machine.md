@@ -9,7 +9,7 @@ The Oceanic Wave Machine captures the mesmerizing rhythm of ocean waves in a des
 
 Watch as waves travel across the chamber, reflecting off boundaries, interfering with each other, and creating complex standing wave patterns. The adjustable frequency control allows you to explore different wave behaviors, from gentle swells to turbulent chop.
 
-**Features:**
+## Features
 - Variable frequency wave generator
 - Crystal-clear acrylic chamber
 - Colored fluid with optimal viscosity

@@ -87,6 +87,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    // Initialize physics gallery if on homepage
+    if (document.querySelector('.physics-showcase')) {
+        // Physics gallery will auto-initialize when physics-gallery.js loads
+        console.log('Physics showcase detected - physics gallery will initialize');
+    }
 });
-
-// Mobile menu functionality is now handled by CSS
