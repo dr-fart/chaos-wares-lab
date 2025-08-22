@@ -11,17 +11,25 @@ const DeviceDetector = {
             return {
                 particleCount: Math.min(150, Math.floor(window.innerWidth * window.innerHeight / 3000)),
                 updateFrequency: 2, // Update every 2nd frame
+                velocityMultiplier: 2.2, // Compensate for reduced update frequency
                 trailOpacity: 0.4,
                 noiseComplexity: 0.06, // Reduced noise sampling
-                velocityDamping: 0.92
+                velocityDamping: 0.88, // Less damping to maintain speed
+                timeScale: 1.8, // Faster time progression
+                maxVelocity: 3.5, // Higher velocity cap for mobile
+                positionScale: 2.0 // Scale position updates for mobile
             };
         }
         return {
             particleCount: Math.min(400, Math.floor(window.innerWidth * window.innerHeight / 1200)),
             updateFrequency: 1, // Update every frame
+            velocityMultiplier: 1.0,
             trailOpacity: 0.25,
             noiseComplexity: 0.08,
-            velocityDamping: 0.94
+            velocityDamping: 0.94,
+            timeScale: 1.0,
+            maxVelocity: 2.0,
+            positionScale: 1.0
         };
     }
 };
@@ -233,28 +241,39 @@ class SwarmParticle {
         // Sample noise field for organic movement
         const xx = this.p.x / 200; // Larger scale for smoother movement
         const yy = this.p.y / 200;
-        const zz = time / 15000; // Slower time progression
+        const zz = time / 15000 * this.profile.timeScale; // Adjust time progression
         
         // Add some randomness
         const angle = Math.random() * Math.PI * 2;
-        const randomForce = Math.random() / 50; // Even smaller random force
+        const randomForce = Math.random() / 50 * this.profile.velocityMultiplier; // Scale random force
         
         // Apply velocity damping first to prevent buildup
-        this.v.mul(this.profile.velocityDamping); // Strong damping to prevent excessive velocity
+        this.v.mul(this.profile.velocityDamping); // Adjust damping
         
         // Calculate velocity based on noise - much more gentle
         this.v.x += randomForce * Math.sin(angle) + this.noise.simplex3d(xx, yy, -zz) * this.profile.noiseComplexity;
         this.v.y += randomForce * Math.cos(angle) + this.noise.simplex3d(xx, yy, zz) * this.profile.noiseComplexity;
         
+        // Limit velocity to maintain visual speed parity
+        const speed = Math.sqrt(this.v.x * this.v.x + this.v.y * this.v.y);
+        if (speed > this.profile.maxVelocity) {
+            this.v.mul(this.profile.maxVelocity / speed);
+        }
+        
         // Store current position for trail
         this.p.move(this.t);
         
-        // Apply velocity - now much more controlled
-        this.p.add(this.v);
+        // Apply velocity with scaling - create new vector to avoid modifying original
+        const scaledVelocity = new Vector3D(
+            this.v.x * this.profile.positionScale,
+            this.v.y * this.profile.positionScale,
+            this.v.z * this.profile.positionScale
+        );
+        this.p.add(scaledVelocity);
         
         // Wrap around edges
         if (this.p.wrap2d(this.bounds)) {
-            this.p.move(this.t);
+            this.reset();
         }
         
         // Slowly change hue
