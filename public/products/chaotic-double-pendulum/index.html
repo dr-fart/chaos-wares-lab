@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaotic Double Pendulum - Chaos Wares</title>
+    <meta name="description" content="Experience the butterfly effect in mesmerizing motion">
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    
+    <link rel="stylesheet" href="../../css/main.css">
+    
+    
+</head>
+<body>
+    <header class="header">
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../" class="nav-logo">
+                <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#FF7B00;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <circle cx="30" cy="40" r="20" fill="none" stroke="url(#waveGradient)" stroke-width="2" opacity="0.8">
+                        <animate attributeName="r" values="20;25;20" dur="2s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="70" cy="60" r="15" fill="none" stroke="url(#waveGradient)" stroke-width="2" opacity="0.6">
+                        <animate attributeName="r" values="15;22;15" dur="2.5s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2.5s" repeatCount="indefinite"/>
+                    </circle>
+                    
+                    <circle cx="50" cy="50" r="4" fill="#00F5D4">
+                        <animate attributeName="fill" values="#00F5D4;#FF7B00;#00F5D4" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    
+                    <path d="M20,20 Q50,30 80,40" fill="none" stroke="#00F5D4" stroke-width="1" opacity="0.5">
+                        <animate attributeName="opacity" values="0.5;0.8;0.3;0.5" dur="2s" repeatCount="indefinite"/>
+                    </path>
+                    <path d="M20,80 Q50,70 80,60" fill="none" stroke="#FF7B00" stroke-width="1" opacity="0.4">
+                        <animate attributeName="opacity" values="0.4;0.7;0.2;0.4" dur="2.3s" repeatCount="indefinite"/>
+                    </path>
+                </svg>
+                <span class="logo-text">Chaos Wares</span>
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="../../about" class="nav-link">About</a></li>
+                <li><a href="../../products" class="nav-link active">Products</a></li>
+                <li><a href="../../explore" class="nav-link">Explore</a></li>
+                <li><a href="../../support" class="nav-link">Support</a></li>
+                <li><a href="../../login" class="nav-link">Login</a></li>
+                <li><a href="../../cart" class="nav-link cart-link">
+                    Cart (<span id="cart-count">0</span>)
+                </a></li>
+            </ul>
+            
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+</header>
+
+    
+    <main>
+        
+<div class="container">
+    
+    <div class="single-product">
+        <div class="single-product-image-container">
+            
+            
+            <img src="../../images/products/chaotic-double-pendulum.svg" alt="Chaotic Double Pendulum" class="single-product-image">
+        </div>
+        <div class="single-product-info">
+            <h1>Chaotic Double Pendulum</h1>
+            <div class="single-product-price">$175.00</div>
+            <div class="single-product-description">
+                <p>The Chaotic Double Pendulum is our flagship demonstration of sensitive dependence on initial conditions. This precision-engineered device consists of two pendulums attached end to end, creating a system that exhibits beautifully chaotic motion.</p>
+<p>Watch as tiny differences in starting position lead to dramatically different trajectories. The pendulum traces intricate, never-repeating patterns that exemplify chaos theory&rsquo;s most famous principle: the butterfly effect. Each swing is a unique journey through phase space, creating hypnotic patterns that captivate viewers for hours.</p>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Precision-machined aluminum construction</li>
+<li>Low-friction bearings for extended motion</li>
+<li>Adjustable release mechanism</li>
+<li>Protective acrylic base</li>
+<li>Includes pattern tracing paper</li>
+<li>Dimensions: 18&quot; × 12&quot; × 24&quot;</li>
+</ul>
+
+            </div>
+            <button class="btn cta-button" onclick="addToCart('CW-DP-001', 'Chaotic Double Pendulum', '175')">
+                Add to Cart
+            </button>
+        </div>
+    </div>
+    
+</div>
+
+    </main>
+    
+    <footer class="footer">
+    <div class="footer-container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Chaos Wares</h3>
+                <p>Curated Curiosities for the Inquisitive Mind</p>
+                <div class="footer-logo">
+                    <svg width="30" height="30" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="footerWaveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#FF7B00;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="30" cy="40" r="20" fill="none" stroke="url(#footerWaveGradient)" stroke-width="2" opacity="0.8"/>
+                        <circle cx="70" cy="60" r="15" fill="none" stroke="url(#footerWaveGradient)" stroke-width="2" opacity="0.6"/>
+                        <circle cx="50" cy="50" r="4" fill="#00F5D4"/>
+                        <path d="M20,20 Q50,30 80,40" fill="none" stroke="#00F5D4" stroke-width="1" opacity="0.5"/>
+                        <path d="M20,80 Q50,70 80,60" fill="none" stroke="#FF7B00" stroke-width="1" opacity="0.4"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="../../about">About Us</a></li>
+                    <li><a href="../../products">Products</a></li>
+                    <li><a href="../../support">Support</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>Transform your space with physics-inspired art</p>
+                <p>Email: hello@chaoswares.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Chaos Wares. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+    
+    
+    <script src="../../js/main.js"></script>
+    
+</body>
+</html>

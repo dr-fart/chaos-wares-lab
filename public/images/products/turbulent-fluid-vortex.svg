@@ -1,0 +1,71 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="vortexGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FF7B00;stop-opacity:0.9" />
+      <stop offset="30%" style="stop-color:#00F5D4;stop-opacity:0.7" />
+      <stop offset="70%" style="stop-color:#0A192F;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#1E293B;stop-opacity:0.8" />
+    </radialGradient>
+    <filter id="vortexGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Cylindrical chamber -->
+  <rect x="100" y="80" width="100" height="140" fill="none" stroke="#E2E8F0" stroke-width="2"/>
+  
+  <!-- Fluid in chamber -->
+  <rect x="102" y="100" width="96" height="118" fill="url(#vortexGrad)" opacity="0.7"/>
+  
+  <!-- Vortex spiral -->
+  <path d="M150,120 Q170,140 150,160 Q130,180 150,200 Q170,180 160,160 Q140,140 150,120" fill="none" stroke="#00F5D4" stroke-width="2" filter="url(#vortexGlow)">
+    <animateTransform attributeName="transform" type="rotate" values="0 150 160;360 150 160" dur="2s" repeatCount="indefinite"/>
+  </path>
+  
+  <path d="M150,130 Q160,150 150,170 Q140,190 150,180 Q160,170 155,150 Q145,140 150,130" fill="none" stroke="#FF7B00" stroke-width="1.5" opacity="0.8">
+    <animateTransform attributeName="transform" type="rotate" values="0 150 160;360 150 160" dur="1.5s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Turbulent particles -->
+  <circle cx="130" cy="140" r="2" fill="#00F5D4" opacity="0.8">
+    <animateTransform attributeName="transform" type="rotate" values="0 150 160;360 150 160" dur="2.2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0.4;0.8" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="170" cy="180" r="1.5" fill="#FF7B00" opacity="0.7">
+    <animateTransform attributeName="transform" type="rotate" values="0 150 160;360 150 160" dur="1.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.7;0.3;0.7" dur="1.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="140" cy="190" r="2.5" fill="#00F5D4" opacity="0.6">
+    <animateTransform attributeName="transform" type="rotate" values="0 150 160;360 150 160" dur="2.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0.9;0.6" dur="0.8s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Flow inlet -->
+  <rect x="80" y="90" width="20" height="8" fill="#1E293B" stroke="#00F5D4"/>
+  <path d="M85,94 L95,94" stroke="#00F5D4" stroke-width="2" marker-end="url(#arrow)">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="1s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Flow outlet -->
+  <rect x="200" y="200" width="20" height="8" fill="#1E293B" stroke="#FF7B00"/>
+  
+  <!-- Base with controls -->
+  <rect x="80" y="240" width="140" height="30" fill="#1E293B" stroke="#00F5D4" stroke-width="2"/>
+  
+  <!-- Control elements -->
+  <circle cx="110" cy="255" r="5" fill="#FF7B00" stroke="#00F5D4">
+    <animate attributeName="fill" values="#FF7B00;#00F5D4;#FF7B00" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <rect x="140" y="250" width="20" height="10" fill="#00F5D4" stroke="#FF7B00"/>
+  <circle cx="190" cy="255" r="5" fill="#00F5D4" stroke="#FF7B00">
+    <animate attributeName="fill" values="#00F5D4;#FF7B00;#00F5D4" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Reynolds number indicator -->
+  <text x="150" y="35" text-anchor="middle" fill="#00F5D4" font-family="monospace" font-size="12">Re &gt; 4000</text>
+  <text x="150" y="50" text-anchor="middle" fill="#FF7B00" font-family="monospace" font-size="10">TURBULENT</text>
+</svg>

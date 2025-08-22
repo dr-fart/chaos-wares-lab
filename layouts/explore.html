@@ -1,0 +1,61 @@
+{{ define "main" }}
+<div class="container">
+    <div class="page-header">
+        <h1>{{ .Title }}</h1>
+        <p class="explore-description">{{ .Content }}</p>
+    </div>
+    
+    <div class="explore-cards">
+        <a href="{{ "/explain-the-chaos/" | relURL }}" class="explore-card-link">
+            <div class="explore-card">
+                <div class="card-content">
+                    <div class="card-icon">
+                        <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <radialGradient id="explainGradient" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#0099AA;stop-opacity:1" />
+                                </radialGradient>
+                            </defs>
+                            <circle cx="50" cy="50" r="35" fill="url(#explainGradient)" opacity="0.2"/>
+                            <circle cx="50" cy="50" r="25" fill="none" stroke="url(#explainGradient)" stroke-width="3">
+                                <animate attributeName="r" values="25;30;25" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="50" cy="50" r="8" fill="url(#explainGradient)"/>
+                            <path d="M35,35 Q50,25 65,35" fill="none" stroke="url(#explainGradient)" stroke-width="2"/>
+                            <path d="M35,65 Q50,75 65,65" fill="none" stroke="url(#explainGradient)" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h2>Explain the Chaos</h2>
+                </div>
+                <p>Curious about the science behind our products? Select an item and have our founder, Dr. Evelyn Reed, explain the physics.</p>
+            </div>
+        </a>
+        
+        <a href="{{ "/search/" | relURL }}" class="explore-card-link">
+            <div class="explore-card">
+                <div class="card-content">
+                    <div class="card-icon">
+                        <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <radialGradient id="searchGradient" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" style="stop-color:#FF7B00;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#CC5500;stop-opacity:1" />
+                                </radialGradient>
+                            </defs>
+                            <circle cx="40" cy="40" r="20" fill="none" stroke="url(#searchGradient)" stroke-width="3"/>
+                            <line x1="56" y1="56" x2="75" y2="75" stroke="url(#searchGradient)" stroke-width="4" stroke-linecap="round"/>
+                            <circle cx="40" cy="40" r="12" fill="url(#searchGradient)" opacity="0.2">
+                                <animate attributeName="opacity" values="0.2;0.4;0.2" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="40" y="45" text-anchor="middle" fill="url(#searchGradient)" font-size="8" font-weight="bold">π</text>
+                        </svg>
+                    </div>
+                    <h2>Search The Principia</h2>
+                </div>
+                <p>Explore our vast library of articles on physics, mathematics, and chaos theory.</p>
+            </div>
+        </a>
+    </div>
+</div>
+{{ end }}

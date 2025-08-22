@@ -1,0 +1,64 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="causticGrad" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FF7B00;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#0A192F;stop-opacity:0.8" />
+    </radialGradient>
+    <filter id="causticGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Device base -->
+  <rect x="75" y="220" width="150" height="40" fill="#1E293B" stroke="#00F5D4" stroke-width="2"/>
+  
+  <!-- Water chamber -->
+  <rect x="85" y="140" width="130" height="80" fill="none" stroke="#E2E8F0" stroke-width="2"/>
+  
+  <!-- Water surface with ripples -->
+  <ellipse cx="150" cy="160" rx="60" ry="30" fill="url(#causticGrad)" opacity="0.6"/>
+  
+  <!-- Ripple rings -->
+  <circle cx="130" cy="165" r="10" fill="none" stroke="#00F5D4" stroke-width="1" opacity="0.7">
+    <animate attributeName="r" values="10;25;10" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="170" cy="155" r="15" fill="none" stroke="#FF7B00" stroke-width="1" opacity="0.6">
+    <animate attributeName="r" values="15;30;15" dur="2.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0.1;0.6" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="150" cy="170" r="8" fill="none" stroke="#00F5D4" stroke-width="1" opacity="0.8">
+    <animate attributeName="r" values="8;20;8" dur="1.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Light source -->
+  <circle cx="150" cy="100" r="8" fill="#FF7B00" filter="url(#causticGlow)">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Light rays -->
+  <path d="M150,108 L140,140 L160,140 Z" fill="#00F5D4" opacity="0.4" filter="url(#causticGlow)">
+    <animate attributeName="opacity" values="0.4;0.7;0.4" dur="1.5s" repeatCount="indefinite"/>
+  </path>
+  <path d="M150,108 L135,145 L165,145 Z" fill="#FF7B00" opacity="0.3" filter="url(#causticGlow)">
+    <animate attributeName="opacity" values="0.3;0.6;0.3" dur="1.8s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Caustic patterns on projection surface -->
+  <path d="M50,280 Q80,270 110,280 T170,280 T230,280 T270,280" fill="none" stroke="#00F5D4" stroke-width="2" opacity="0.6" filter="url(#causticGlow)">
+    <animate attributeName="d" values="M50,280 Q80,270 110,280 T170,280 T230,280 T270,280;M50,280 Q80,290 110,280 T170,280 T230,280 T270,280;M50,280 Q80,270 110,280 T170,280 T230,280 T270,280" dur="3s" repeatCount="indefinite"/>
+  </path>
+  <path d="M60,285 Q100,275 140,285 T200,285 T260,285" fill="none" stroke="#FF7B00" stroke-width="1.5" opacity="0.5" filter="url(#causticGlow)">
+    <animate attributeName="d" values="M60,285 Q100,275 140,285 T200,285 T260,285;M60,285 Q100,295 140,285 T200,285 T260,285;M60,285 Q100,275 140,285 T200,285 T260,285" dur="2.5s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Control knobs -->
+  <circle cx="100" cy="240" r="6" fill="#FF7B00" stroke="#00F5D4"/>
+  <circle cx="200" cy="240" r="6" fill="#00F5D4" stroke="#FF7B00"/>
+</svg>

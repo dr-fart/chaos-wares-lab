@@ -1,0 +1,13 @@
+baseURL = ""
+languageCode = "en-us"
+title = "Chaos Wares"
+relativeURLs = true
+
+[params]
+  tagline = "Curated Curiosities for the Inquisitive Mind"
+  description = "We transform complex principles of the universe into tangible objects of wonder for your desk, home, and office."
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

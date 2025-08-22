@@ -1,0 +1,26 @@
+{{ define "main" }}
+<div class="container">
+    <div class="page-header">
+        <h1>Search The Principia Knowledge Base</h1>
+    </div>
+    
+    <div class="search-container">
+        <p>Explore our vast library of articles on physics, mathematics, and chaos theory.</p>
+        
+        <form id="search-form" class="search-form">
+            <div class="form-group">
+                <label for="search-query">Search Query:</label>
+                <input type="text" id="search-query" name="query" class="search-input" placeholder="Enter your search terms..." required>
+            </div>
+            
+            <button type="submit" class="btn cta-button">Search</button>
+        </form>
+        
+        <div id="search-results" class="search-results">
+            <!-- Search results will appear here -->
+        </div>
+    </div>
+</div>
+
+<script src="{{ "js/search.js" | relURL }}"></script>
+{{ end }}

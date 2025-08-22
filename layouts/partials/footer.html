@@ -1,0 +1,44 @@
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Chaos Wares</h3>
+                <p>{{ .Site.Params.tagline }}</p>
+                <div class="footer-logo">
+                    <svg width="30" height="30" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="footerWaveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#FF7B00;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="30" cy="40" r="20" fill="none" stroke="url(#footerWaveGradient)" stroke-width="2" opacity="0.8"/>
+                        <circle cx="70" cy="60" r="15" fill="none" stroke="url(#footerWaveGradient)" stroke-width="2" opacity="0.6"/>
+                        <circle cx="50" cy="50" r="4" fill="#00F5D4"/>
+                        <path d="M20,20 Q50,30 80,40" fill="none" stroke="#00F5D4" stroke-width="1" opacity="0.5"/>
+                        <path d="M20,80 Q50,70 80,60" fill="none" stroke="#FF7B00" stroke-width="1" opacity="0.4"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{{ "/about" | relURL }}">About Us</a></li>
+                    <li><a href="{{ "/products" | relURL }}">Products</a></li>
+                    <li><a href="{{ "/support" | relURL }}">Support</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>Transform your space with physics-inspired art</p>
+                <p>Email: hello@chaoswares.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; {{ now.Year }} Chaos Wares. All rights reserved.</p>
+        </div>
+    </div>
+</footer>

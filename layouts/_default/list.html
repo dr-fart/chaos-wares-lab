@@ -1,0 +1,22 @@
+{{ define "main" }}
+<div class="container">
+    <div class="page-header">
+        <h1>{{ .Title }}</h1>
+    </div>
+    
+    <div class="product-gallery">
+        {{ range .Pages }}
+        <div class="product-card">
+            <a href="{{ .Permalink }}" class="product-link">
+                {{ $imageName := .Title | lower | replaceRE "^the " "" | replaceRE "[^a-z0-9]+" "-" | replaceRE "^-|-$" "" }}
+                <img src="{{ printf "images/products/%s.svg" $imageName | relURL }}" alt="{{ .Title }}" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">{{ .Title }}</h3>
+                    <p class="product-price">${{ printf "%.2f" .Params.price }}</p>
+                </div>
+            </a>
+        </div>
+        {{ end }}
+    </div>
+</div>
+{{ end }}

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Products on Chaos Wares</title>
+    <link>//localhost:1313/products/</link>
+    <description>Recent content in Products on Chaos Wares</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="//localhost:1313/products/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ant Colony Habitat</title>
+      <link>//localhost:1313/products/ant-colony-habitat/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/products/ant-colony-habitat/</guid>
+      <description>&lt;p&gt;The Ant Colony Habitat is our most sophisticated demonstration of emergent behavior and swarm intelligence. This carefully designed ecosystem houses a live ant colony, allowing you to observe how simple individual behaviors give rise to complex collective intelligence.&lt;/p&gt;&#xA;&lt;p&gt;Watch as thousands of individual ants, following basic local rules, create sophisticated tunnel networks, efficient foraging patterns, and adaptive responses to environmental changes. The habitat includes observation chambers, feeding systems, and environmental controls that let you study emergence, self-organization, and collective decision-making in action.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chaotic Double Pendulum</title>
+      <link>//localhost:1313/products/chaotic-double-pendulum/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/products/chaotic-double-pendulum/</guid>
+      <description>&lt;p&gt;The Chaotic Double Pendulum is our flagship demonstration of sensitive dependence on initial conditions. This precision-engineered device consists of two pendulums attached end to end, creating a system that exhibits beautifully chaotic motion.&lt;/p&gt;&#xA;&lt;p&gt;Watch as tiny differences in starting position lead to dramatically different trajectories. The pendulum traces intricate, never-repeating patterns that exemplify chaos theory&amp;rsquo;s most famous principle: the butterfly effect. Each swing is a unique journey through phase space, creating hypnotic patterns that captivate viewers for hours.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Ferrofluidic Sculpture</title>
+      <link>//localhost:1313/products/ferrofluidic-sculpture/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/products/ferrofluidic-sculpture/</guid>
+      <description>&lt;p&gt;A self-contained ecosystem of chaos. Internal electromagnets activate in a random sequence, sculpting the ferrofluid into unpredictable, ever-changing spikes and shapes. Above, a matrix of LEDs shifts through random colors and intensities, casting an otherworldly glow on the fluid&amp;rsquo;s dance.&lt;/p&gt;&#xA;&lt;p&gt;The ferrofluid responds instantly to magnetic fields, creating organic, alien-like formations that seem to defy gravity. Each electromagnetic pulse reshapes the liquid metal into new configurations, while the synchronized lighting creates an immersive experience that transforms any room into a portal to another dimension.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Interactive Plasma Ball</title>
+      <link>//localhost:1313/products/interactive-plasma-ball/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/products/interactive-plasma-ball/</guid>
+      <description>&lt;p&gt;Experience the raw beauty of electrical discharge with our Interactive Plasma Ball. This classic demonstration of high-voltage physics creates stunning lightning-like arcs that dance within a glass sphere, responding to your touch and nearby objects.&lt;/p&gt;&#xA;&lt;p&gt;The plasma filaments follow the path of least resistance, creating ever-changing patterns that illustrate fundamental principles of electricity, magnetism, and gas physics. Touch the surface to direct the plasma streams, or bring metal objects near to watch the arcs reach out in fascinating displays of electromagnetic attraction.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Kinetic Light Mobile</title>
+      <link>//localhost:1313/products/kinetic-light-mobile/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/products/kinetic-light-mobile/</guid>
+      <description>&lt;p&gt;The Kinetic Light Mobile transforms air currents into a mesmerizing dance of light and shadow. This carefully balanced sculpture features multiple tiers of reflective elements that rotate independently, each embedded with micro-LEDs that respond to the mobile&amp;rsquo;s motion.&lt;/p&gt;&#xA;&lt;p&gt;As gentle air currents set the mobile in motion, the LEDs create flowing patterns of light that project onto surrounding surfaces. The interplay between kinetic energy and photonic display demonstrates principles of angular momentum, gyroscopic precession, and energy transfer in a stunning visual format.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Oceanic Wave Machine</title>
+      <link>//localhost:1313/products/oceanic-wave-machine/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/products/oceanic-wave-machine/</guid>
+      <description>&lt;p&gt;The Oceanic Wave Machine captures the mesmerizing rhythm of ocean waves in a desktop format. This elegant device uses precisely timed mechanical oscillations to generate realistic wave patterns in a transparent fluid chamber, demonstrating principles of wave propagation, interference, and fluid dynamics.&lt;/p&gt;&#xA;&lt;p&gt;Watch as waves travel across the chamber, reflecting off boundaries, interfering with each other, and creating complex standing wave patterns. The adjustable frequency control allows you to explore different wave behaviors, from gentle swells to turbulent chop.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Rippling Water Caustics</title>
+      <link>//localhost:1313/products/rippling-water-caustics/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/products/rippling-water-caustics/</guid>
+      <description>&lt;p&gt;The Rippling Water Caustics device creates the enchanting light patterns you see at the bottom of swimming pools, but in a controlled, desktop environment. This sophisticated optical instrument uses precisely controlled water ripples and focused lighting to generate ever-changing caustic patterns on any surface.&lt;/p&gt;&#xA;&lt;p&gt;The interplay between fluid motion and light refraction creates hypnotic displays that demonstrate Snell&amp;rsquo;s law, wave optics, and the mathematics of caustic curves. Each ripple bends light in unique ways, creating patterns that are both scientifically fascinating and aesthetically stunning.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>The Entropy Lamp</title>
+      <link>//localhost:1313/products/entropy-lamp/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/products/entropy-lamp/</guid>
+      <description>&lt;p&gt;Witness the second law of thermodynamics in beautiful, tangible form. The Entropy Lamp features a sealed chamber filled with temperature-sensitive liquid crystals that respond to heat gradients, creating ever-changing patterns that demonstrate how energy naturally flows from hot to cold.&lt;/p&gt;&#xA;&lt;p&gt;As the lamp operates, watch as ordered structures give way to increasingly random distributions of color and temperature, perfectly illustrating the concept of entropy increase. The patterns never repeat exactly, making each moment a unique glimpse into the fundamental tendency of the universe toward disorder.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Turbulent Fluid Vortex</title>
+      <link>//localhost:1313/products/turbulent-fluid-vortex/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/products/turbulent-fluid-vortex/</guid>
+      <description>&lt;p&gt;The Turbulent Fluid Vortex demonstrates one of fluid dynamics&amp;rsquo; most fascinating phenomena: the transition from smooth, laminar flow to chaotic turbulence. This device creates controlled vortices in a transparent cylinder, allowing you to observe the Reynolds number transition in real-time.&lt;/p&gt;&#xA;&lt;p&gt;Watch as smooth, predictable flow patterns suddenly break down into complex, swirling turbulence. The adjustable flow rate lets you explore the critical threshold where order gives way to chaos, illustrating fundamental principles that govern everything from blood flow to atmospheric dynamics.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

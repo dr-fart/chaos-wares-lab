@@ -1,0 +1,30 @@
+{{ define "main" }}
+<div class="container">
+    {{ if eq .Section "products" }}
+    <div class="single-product">
+        <div class="single-product-image-container">
+            {{ $cleanTitle := .Title | lower | replaceRE "^the " "" | replaceRE "[^a-z0-9]+" "-" | replaceRE "^-|-$" "" }}
+            {{ $imagePath := printf "images/products/%s.svg" $cleanTitle }}
+            <img src="{{ $imagePath | relURL }}" alt="{{ .Title }}" class="single-product-image">
+        </div>
+        <div class="single-product-info">
+            <h1>{{ .Title }}</h1>
+            <div class="single-product-price">${{ printf "%.2f" .Params.price }}</div>
+            <div class="single-product-description">
+                {{ .Content }}
+            </div>
+            <button class="btn cta-button" onclick="addToCart('{{ .Params.sku }}', '{{ .Title }}', '{{ .Params.price }}')">
+                Add to Cart
+            </button>
+        </div>
+    </div>
+    {{ else }}
+    <div class="page-header">
+        <h1>{{ .Title }}</h1>
+    </div>
+    <div class="content-section">
+        {{ .Content }}
+    </div>
+    {{ end }}
+</div>
+{{ end }}

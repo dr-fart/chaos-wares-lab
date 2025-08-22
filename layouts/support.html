@@ -1,0 +1,80 @@
+{{ define "main" }}
+<div class="container">
+    <div class="page-header">
+        <h1>Support</h1>
+        <p>Need help with your Chaos Wares products? We're here to assist you.</p>
+    </div>
+    
+    <div class="form-container">
+        <h2>Contact Us</h2>
+        <form id="support-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="6" placeholder="Describe your issue or question..." required></textarea>
+            </div>
+            <button type="submit" class="btn">Send Message</button>
+        </form>
+    </div>
+    
+    <div class="content-section">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            
+            <h3>Product Care & Maintenance</h3>
+            <p><strong>Q: How do I clean my physics demonstration devices?</strong><br>
+            A: Most of our products can be cleaned with a soft, dry cloth. For glass components, use a mild glass cleaner. Avoid getting electronic components wet.</p>
+            
+            <p><strong>Q: My pendulum has stopped moving smoothly. What should I do?</strong><br>
+            A: Check that all pivot points are clean and free of dust. A small drop of light machine oil on the bearings may help restore smooth motion.</p>
+            
+            <h3>Shipping & Returns</h3>
+            <p><strong>Q: How long does shipping take?</strong><br>
+            A: Standard shipping takes 5-7 business days. Expedited options are available at checkout.</p>
+            
+            <p><strong>Q: What is your return policy?</strong><br>
+            A: We offer a 30-day return policy for unused items in original packaging. Custom or personalized items may have different return terms.</p>
+            
+            <h3>Technical Support</h3>
+            <p><strong>Q: My electronic device isn't working properly.</strong><br>
+            A: First, check all power connections and ensure batteries are fresh. If the problem persists, contact our technical support team with your product's serial number.</p>
+        </div>
+    </div>
+</div>
+{{ end }}
+
+{{ define "scripts" }}
+<script>
+document.getElementById('support-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        email: document.getElementById('email').value,
+        message: document.getElementById('message').value
+    };
+    
+    try {
+        const response = await fetch('/api/v1/forms/contact-submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            alert('Message sent successfully! We\'ll get back to you soon.');
+            document.getElementById('support-form').reset();
+        } else {
+            alert('Failed to send message. Please try again.');
+        }
+    } catch (error) {
+        console.error('Support form error:', error);
+        alert('Failed to send message. Please try again.');
+    }
+});
+</script>
+{{ end }}

@@ -1,0 +1,62 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#0A192F;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#00F5D4;stop-opacity:0.8" />
+    </linearGradient>
+    <filter id="waveGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Machine base -->
+  <rect x="50" y="200" width="200" height="60" fill="#1E293B" stroke="#00F5D4" stroke-width="2"/>
+  
+  <!-- Wave chamber -->
+  <rect x="60" y="120" width="180" height="80" fill="none" stroke="#E2E8F0" stroke-width="2"/>
+  
+  <!-- Water/fluid -->
+  <rect x="62" y="160" width="176" height="38" fill="url(#waveGrad)" opacity="0.7"/>
+  
+  <!-- Wave patterns -->
+  <path d="M62,170 Q90,160 120,170 T180,170 T238,170" fill="none" stroke="#00F5D4" stroke-width="2" filter="url(#waveGlow)">
+    <animate attributeName="d" values="M62,170 Q90,160 120,170 T180,170 T238,170;M62,170 Q90,180 120,170 T180,170 T238,170;M62,170 Q90,160 120,170 T180,170 T238,170" dur="2s" repeatCount="indefinite"/>
+  </path>
+  
+  <path d="M62,175 Q100,165 140,175 T200,175 T238,175" fill="none" stroke="#FF7B00" stroke-width="1.5" opacity="0.8">
+    <animate attributeName="d" values="M62,175 Q100,165 140,175 T200,175 T238,175;M62,175 Q100,185 140,175 T200,175 T238,175;M62,175 Q100,165 140,175 T200,175 T238,175" dur="2.5s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Wave generator mechanism -->
+  <rect x="70" y="210" width="30" height="20" fill="#FF7B00" stroke="#00F5D4"/>
+  <circle cx="85" cy="220" r="5" fill="#00F5D4">
+    <animate attributeName="r" values="5;7;5" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Control panel -->
+  <rect x="180" y="210" width="60" height="30" fill="#1E293B" stroke="#00F5D4"/>
+  <circle cx="195" cy="225" r="3" fill="#FF7B00">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="210" cy="225" r="3" fill="#00F5D4">
+    <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="225" cy="225" r="3" fill="#FF7B00">
+    <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Interference patterns -->
+  <circle cx="120" cy="175" r="15" fill="none" stroke="#00F5D4" stroke-width="1" opacity="0.4">
+    <animate attributeName="r" values="15;25;15" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.4;0.1;0.4" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="180" cy="175" r="20" fill="none" stroke="#FF7B00" stroke-width="1" opacity="0.3">
+    <animate attributeName="r" values="20;30;20" dur="2.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.1;0.3" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+</svg>

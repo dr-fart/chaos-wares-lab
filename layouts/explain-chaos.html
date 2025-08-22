@@ -1,0 +1,35 @@
+{{ define "main" }}
+<div class="container">
+    <div class="page-header">
+        <h1>Explain Chaos</h1>
+    </div>
+    
+    <div class="explain-chaos-container">
+        <p>Curious about the science behind our products? Select an item from the list below and our founder, Dr. Evelyn Reed, will provide a brief explanation of the fascinating physics at play.</p>
+        
+        <div class="ai-description">
+            <p><strong>How it works:</strong> This feature uses artificial intelligence to generate personalized explanations of the scientific principles behind each product. When you click "Explain Chaos," our system connects to an external AI service that analyzes the selected product and provides Dr. Reed's perspective on the underlying physics.</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-group">
+                <label for="product-select">Select a Product:</label>
+                <select id="product-select" class="product-dropdown">
+                    <option value="">Choose a product...</option>
+                    {{ range (where .Site.Pages "Section" "products") }}
+                    <option value="{{ .Title }}">{{ .Title }}</option>
+                    {{ end }}
+                </select>
+            </div>
+            
+            <button id="explain-button" class="btn cta-button">Explain Chaos</button>
+        </div>
+        
+        <div id="explanation-area" class="explanation-display">
+            <!-- AI response will appear here -->
+        </div>
+    </div>
+</div>
+
+<script src="{{ "js/explain-chaos.js" | relURL }}"></script>
+{{ end }}
