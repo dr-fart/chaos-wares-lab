@@ -11,13 +11,13 @@ const DeviceDetector = {
             return {
                 particleCount: Math.min(150, Math.floor(window.innerWidth * window.innerHeight / 3000)),
                 updateFrequency: 2, // Update every 2nd frame
-                velocityMultiplier: 2.2, // Compensate for reduced update frequency
+                velocityMultiplier: 5.5, // Much higher velocity compensation
                 trailOpacity: 0.4,
-                noiseComplexity: 0.06, // Reduced noise sampling
-                velocityDamping: 0.88, // Less damping to maintain speed
-                timeScale: 1.8, // Faster time progression
-                maxVelocity: 3.5, // Higher velocity cap for mobile
-                positionScale: 2.0 // Scale position updates for mobile
+                noiseComplexity: 0.15, // Increased for more dynamic movement
+                velocityDamping: 0.82, // Even less damping for more speed
+                timeScale: 4.0, // Much faster time progression
+                maxVelocity: 8.0, // Much higher velocity cap
+                positionScale: 4.5 // Scale position updates much more aggressively
             };
         }
         return {
