@@ -1,6 +1,31 @@
 // Hero Physics Background - Particle Swarm with Simplex Noise
 // Organic, flowing particle system inspired by magnetic field recreation
 
+// Mobile detection utility
+const DeviceDetector = {
+    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+    isLowEnd: navigator.hardwareConcurrency <= 4 || navigator.deviceMemory <= 4,
+    
+    getPerformanceProfile() {
+        if (this.isMobile || this.isLowEnd) {
+            return {
+                particleCount: Math.min(150, Math.floor(window.innerWidth * window.innerHeight / 3000)),
+                updateFrequency: 2, // Update every 2nd frame
+                trailOpacity: 0.4,
+                noiseComplexity: 0.06, // Reduced noise sampling
+                velocityDamping: 0.92
+            };
+        }
+        return {
+            particleCount: Math.min(400, Math.floor(window.innerWidth * window.innerHeight / 1200)),
+            updateFrequency: 1, // Update every frame
+            trailOpacity: 0.25,
+            noiseComplexity: 0.08,
+            velocityDamping: 0.94
+        };
+    }
+};
+
 class Vector3D {
     constructor(x = 0, y = 0, z = 0) {
         this.x = x;
@@ -178,7 +203,7 @@ class SimplexNoise {
 }
 
 class SwarmParticle {
-    constructor(bounds, noise) {
+    constructor(bounds, noise, profile) {
         this.p = new Vector3D(); // position
         this.t = new Vector3D(); // trail position
         this.v = new Vector3D(); // velocity
@@ -187,6 +212,7 @@ class SwarmParticle {
         this.life = 0;
         this.maxLife = 0;
         this.hue = Math.random() * 360;
+        this.profile = profile;
         this.reset();
     }
     
@@ -214,11 +240,11 @@ class SwarmParticle {
         const randomForce = Math.random() / 50; // Even smaller random force
         
         // Apply velocity damping first to prevent buildup
-        this.v.mul(0.94); // Strong damping to prevent excessive velocity
+        this.v.mul(this.profile.velocityDamping); // Strong damping to prevent excessive velocity
         
         // Calculate velocity based on noise - much more gentle
-        this.v.x += randomForce * Math.sin(angle) + this.noise.simplex3d(xx, yy, -zz) * 0.08;
-        this.v.y += randomForce * Math.cos(angle) + this.noise.simplex3d(xx, yy, zz) * 0.08;
+        this.v.x += randomForce * Math.sin(angle) + this.noise.simplex3d(xx, yy, -zz) * this.profile.noiseComplexity;
+        this.v.y += randomForce * Math.cos(angle) + this.noise.simplex3d(xx, yy, zz) * this.profile.noiseComplexity;
         
         // Store current position for trail
         this.p.move(this.t);
@@ -264,43 +290,47 @@ class HeroPhysicsBackground {
         this.ctx = canvas.getContext('2d');
         this.particles = [];
         this.noise = new SimplexNoise();
-        this.bounds = new Vector3D();
         this.animationId = null;
-        this.startTime = Date.now();
+        this.frameCount = 0;
         
-        this.resize();
-        this.initParticles();
+        // Get performance profile based on device
+        this.profile = DeviceDetector.getPerformanceProfile();
         
-        // Handle resize
-        window.addEventListener('resize', () => this.resize());
+        this.bounds = new Vector3D();
+        this.resize = this.resize.bind(this);
         
+        this.setupCanvas();
+        this.createParticles();
         this.animate();
+        
+        window.addEventListener('resize', this.resize);
     }
     
-    resize() {
+    setupCanvas() {
         const rect = this.canvas.getBoundingClientRect();
-        const dpr = window.devicePixelRatio || 1;
-        
-        if (rect.width === 0 || rect.height === 0) return false;
+        const dpr = Math.min(window.devicePixelRatio || 1, DeviceDetector.isMobile ? 1.5 : 2);
         
         this.canvas.width = rect.width * dpr;
         this.canvas.height = rect.height * dpr;
         this.canvas.style.width = rect.width + 'px';
         this.canvas.style.height = rect.height + 'px';
+        
         this.ctx.scale(dpr, dpr);
-        
-        this.bounds.x = rect.width;
-        this.bounds.y = rect.height;
-        
-        return true;
+        this.bounds.set(rect.width, rect.height, 0);
     }
     
-    initParticles() {
+    resize() {
+        this.setupCanvas();
+        // Recreate particles with new count for new screen size
         this.particles = [];
-        const particleCount = Math.min(400, Math.floor((this.bounds.x * this.bounds.y) / 1200));
+        this.createParticles();
+    }
+    
+    createParticles() {
+        const particleCount = this.profile.particleCount;
         
         for (let i = 0; i < particleCount; i++) {
-            this.particles.push(new SwarmParticle(this.bounds, this.noise));
+            this.particles.push(new SwarmParticle(this.bounds, this.noise, this.profile));
         }
     }
     
@@ -309,15 +339,20 @@ class HeroPhysicsBackground {
         
         // Clear with fade effect matching hero background
         this.ctx.globalCompositeOperation = 'source-over';
-        this.ctx.fillStyle = 'rgba(26, 35, 50, 0.25)'; // More persistent trails
+        this.ctx.fillStyle = `rgba(26, 35, 50, ${this.profile.trailOpacity})`;
         this.ctx.fillRect(0, 0, this.bounds.x, this.bounds.y);
         
         // Set blend mode for particle trails
         this.ctx.globalCompositeOperation = 'lighter';
         
-        // Update and render particles
+        // Update and render particles based on update frequency
+        this.frameCount++;
+        const shouldUpdate = this.frameCount % this.profile.updateFrequency === 0;
+        
         for (let particle of this.particles) {
-            particle.step(currentTime);
+            if (shouldUpdate) {
+                particle.step(currentTime);
+            }
             particle.render(this.ctx);
         }
         
