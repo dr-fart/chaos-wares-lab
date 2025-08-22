@@ -10,26 +10,26 @@ const DeviceDetector = {
         if (this.isMobile || this.isLowEnd) {
             return {
                 particleCount: Math.min(40, Math.floor(window.innerWidth * window.innerHeight / 8000)),
-                updateFrequency: 4,
-                velocityMultiplier: 8.0, // Increased from 5.5 for faster motion
+                updateFrequency: 3, // Reduced from 4 to 3 for smoother motion
+                velocityMultiplier: 8.0,
                 trailOpacity: 0.4,
                 noiseComplexity: 0.15,
-                velocityDamping: 0.82,
-                timeScale: 6.0, // Increased from 4.0 for faster time progression
-                maxVelocity: 12.0, // Increased from 8.0 for higher speeds
-                positionScale: 6.5 // Increased from 4.5 for more movement
+                velocityDamping: 0.88, // Increased from 0.82 for smoother transitions between updates
+                timeScale: 6.0,
+                maxVelocity: 12.0,
+                positionScale: 6.5
             };
         }
         return {
             particleCount: Math.min(100, Math.floor(window.innerWidth * window.innerHeight / 4000)),
             updateFrequency: 3,
-            velocityMultiplier: 2.5, // Increased from 1.0 for faster motion
+            velocityMultiplier: 2.5,
             trailOpacity: 0.25,
             noiseComplexity: 0.08,
             velocityDamping: 0.94,
-            timeScale: 2.5, // Increased from 1.0 for faster time progression
-            maxVelocity: 5.0, // Increased from 2.0 for higher speeds
-            positionScale: 2.5 // Increased from 1.0 for more movement
+            timeScale: 2.5,
+            maxVelocity: 5.0,
+            positionScale: 2.5
         };
     }
 };
