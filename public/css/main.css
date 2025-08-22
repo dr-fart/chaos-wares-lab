@@ -9,6 +9,12 @@
   --card-bg: #1E293B;
   --border-color: #334155;
   --hover-bg: #2D3748;
+  
+  /* Common transitions */
+  --transition-fast: all 0.3s ease;
+  --transition-transform: transform 0.3s ease;
+  --button-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  --button-gradient-hover: linear-gradient(135deg, var(--accent-primary), #00D4B8);
 }
 
 /* Reset and Base Styles */
@@ -48,21 +54,15 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Poppins', sans-serif;
   color: var(--text-heading);
   font-weight: 600;
   margin-bottom: 1rem;
 }
 
-h1 { font-size: 3rem; }
-h2 { font-size: 2.5rem; }
-h3 { font-size: 2rem; }
-h4 { font-size: 1.5rem; }
-
 a {
   color: var(--accent-primary);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: var(--transition-fast);
 }
 
 a:hover {
@@ -173,7 +173,7 @@ a:hover {
 
 .nav-link {
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: var(--transition-fast);
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
 }
@@ -188,18 +188,19 @@ a:hover {
 }
 
 .cart-link {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  background: var(--button-gradient);
   color: var(--bg-primary);
   font-weight: 600;
   border-radius: 2rem;
   padding: 0.5rem 1rem;
   white-space: nowrap;
+  transition: var(--transition-fast);
 }
 
 .cart-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 245, 212, 0.3);
-  background: linear-gradient(135deg, var(--accent-primary), #00D4B8);
+  background: var(--button-gradient-hover);
   color: var(--bg-primary);
 }
 
@@ -219,7 +220,7 @@ a:hover {
 
 /* Main Content */
 main {
-  min-height: calc(100vh - 200px);
+  /* Removed min-height to prevent excessive blank space */
 }
 
 .container {
@@ -312,14 +313,13 @@ main {
 }
 
 .cta-button {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  background: var(--button-gradient);
   color: var(--bg-primary);
   padding: 1rem 2rem;
   border-radius: 2rem;
   font-weight: 600;
   font-size: 1.1rem;
-  transition: all 0.3s ease;
+  transition: var(--transition-fast);
   border: none;
   cursor: pointer;
 }
@@ -327,7 +327,7 @@ main {
 .cta-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0, 245, 212, 0.4);
-  background: linear-gradient(135deg, var(--accent-primary), #00D4B8);
+  background: var(--button-gradient-hover);
   color: var(--bg-primary);
 }
 
@@ -427,21 +427,21 @@ main {
 }
 
 .btn {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  background: var(--button-gradient);
   color: var(--bg-primary);
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 0.5rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition-fast);
   font-size: 1rem;
 }
 
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 245, 212, 0.3);
-  background: linear-gradient(135deg, var(--accent-primary), #00D4B8);
+  background: var(--button-gradient-hover);
   color: var(--bg-primary);
 }
 
@@ -534,7 +534,6 @@ main {
   color: var(--accent-primary);
   margin-bottom: 1rem;
 }
-
 
 .footer-section ul li {
   margin-bottom: 0.5rem;
@@ -640,7 +639,6 @@ main {
     display: none;
   }
 }
-
 
 /* AI Description Styles */
 .ai-description {
@@ -1010,21 +1008,21 @@ main {
 
 .card-button {
   display: inline-block;
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  background: var(--button-gradient);
   color: var(--bg-primary);
   text-decoration: none;
   padding: 0.875rem 2rem;
   border-radius: 2rem;
   font-weight: 600;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: var(--transition-fast);
 }
 
 .card-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 245, 212, 0.4);
   text-decoration: none;
-  background: linear-gradient(135deg, var(--accent-primary), #00D4B8);
+  background: var(--button-gradient-hover);
   color: var(--bg-primary);
 }
 
@@ -1194,4 +1192,30 @@ main {
   .simulation-label {
     font-size: 0.9rem;
   }
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb {
+  margin-bottom: 1.5rem;
+  padding: 0;
+}
+
+.breadcrumb-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  transition: var(--transition-fast);
+}
+
+.breadcrumb-button:hover {
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+  border-color: var(--accent-primary);
+  transform: translateY(-1px);
 }

@@ -1,59 +1,91 @@
-// Cart functionality
-let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+// Cart Manager - Centralized cart operations
+const CartManager = {
+    // Cache cart data to reduce localStorage parsing
+    _cart: null,
+    
+    // Get cart with caching
+    getCart() {
+        if (this._cart === null) {
+            this._cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        }
+        return this._cart;
+    },
+    
+    // Save cart and update cache
+    saveCart(cart) {
+        this._cart = cart;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        this.updateCartCount();
+    },
+    
+    // Update cart count in header
+    updateCartCount() {
+        const cartCountElement = document.getElementById('cart-count');
+        if (cartCountElement) {
+            const totalQuantity = this.getCart().reduce((total, item) => total + item.quantity, 0);
+            cartCountElement.textContent = totalQuantity;
+        }
+    },
+    
+    // Add item to cart
+    addItem(sku, name, price) {
+        const cart = this.getCart();
+        const existingItem = cart.find(item => item.sku === sku);
+        
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({ sku, name, price: parseFloat(price), quantity: 1 });
+        }
+        
+        this.saveCart(cart);
+        alert(`${name} added to cart!`);
+    },
+    
+    // Remove item from cart
+    removeItem(sku) {
+        const cart = this.getCart().filter(item => item.sku !== sku);
+        this.saveCart(cart);
+        
+        // Refresh cart display if function exists
+        if (typeof displayCartItems === 'function') {
+            displayCartItems();
+        }
+    },
+    
+    // Clear entire cart
+    clear() {
+        this._cart = [];
+        localStorage.removeItem('cart');
+        this.updateCartCount();
+        
+        // Refresh cart display if function exists
+        if (typeof displayCartItems === 'function') {
+            displayCartItems();
+        }
+    }
+};
 
-// Update cart count in header
+// Legacy function wrappers for backward compatibility
 function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const cartCountElement = document.getElementById('cart-count');
-    if (cartCountElement) {
-        const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
-        cartCountElement.textContent = totalQuantity;
-    }
+    CartManager.updateCartCount();
 }
 
-// Add item to cart
 function addToCart(sku, name, price) {
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const existingItem = cart.find(item => item.sku === sku);
-    
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        cart.push({ sku, name, price: parseFloat(price), quantity: 1 });
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount();
-    alert(`${name} added to cart!`);
+    CartManager.addItem(sku, name, price);
 }
 
-// Remove item from cart
 function removeFromCart(sku) {
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    cart = cart.filter(item => item.sku !== sku);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount();
-    
-    // If we're on the cart page, refresh the display
-    if (typeof displayCartItems === 'function') {
-        displayCartItems();
-    }
+    CartManager.removeItem(sku);
+}
+
+function clearCart() {
+    CartManager.clear();
 }
 
 // Format price consistently
 function formatPrice(price) {
     return parseFloat(price).toFixed(2);
-}
-
-// Clear entire cart
-function clearCart() {
-    localStorage.removeItem('cart');
-    updateCartCount();
-    
-    // If we're on the cart page, refresh the display
-    if (typeof displayCartItems === 'function') {
-        displayCartItems();
-    }
 }
 
 // Mobile menu toggle
@@ -67,7 +99,7 @@ function toggleMobileMenu() {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
-    updateCartCount();
+    CartManager.updateCartCount();
     
     // Add mobile menu event listener
     const hamburger = document.querySelector('.hamburger');
@@ -90,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize physics gallery if on homepage
     if (document.querySelector('.physics-showcase')) {
-        // Physics gallery will auto-initialize when physics-gallery.js loads
         console.log('Physics showcase detected - physics gallery will initialize');
     }
 });

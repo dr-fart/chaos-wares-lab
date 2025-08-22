@@ -8,6 +8,9 @@
             <img src="{{ $imagePath | relURL }}" alt="{{ .Title }}" class="single-product-image">
         </div>
         <div class="single-product-info">
+            <div class="breadcrumb">
+                <a href="{{ "/products" | relURL }}" class="breadcrumb-button">← Back to Products</a>
+            </div>
             <h1>{{ .Title }}</h1>
             <div class="single-product-price">${{ printf "%.2f" .Params.price }}</div>
             <div class="single-product-description">

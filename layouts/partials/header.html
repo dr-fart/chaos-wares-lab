@@ -7,10 +7,10 @@
             </a>
             
             <ul class="nav-menu">
-                <li><a href="{{ "/about" | relURL }}" class="nav-link{{ if eq .RelPermalink "/about/" }} active{{ end }}">About</a></li>
                 <li><a href="{{ "/products" | relURL }}" class="nav-link{{ if or (eq .RelPermalink "/products/") (eq .Section "products") }} active{{ end }}">Products</a></li>
-                <li><a href="{{ "/explore" | relURL }}" class="nav-link{{ if or (eq .RelPermalink "/explore/") (eq .RelPermalink "/explain-the-chaos/") (eq .RelPermalink "/search/") }} active{{ end }}">Explore</a></li>
+                <li><a href="{{ "/about" | relURL }}" class="nav-link{{ if eq .RelPermalink "/about/" }} active{{ end }}">About</a></li>
                 <li><a href="{{ "/support" | relURL }}" class="nav-link{{ if eq .RelPermalink "/support/" }} active{{ end }}">Support</a></li>
+                <li><a href="{{ "/explore" | relURL }}" class="nav-link{{ if or (eq .RelPermalink "/explore/") (eq .RelPermalink "/explain-the-chaos/") (eq .RelPermalink "/search/") }} active{{ end }}">Explore</a></li>
                 <li><a href="{{ "/login" | relURL }}" class="nav-link{{ if eq .RelPermalink "/login/" }} active{{ end }}">Login</a></li>
                 <li><a href="{{ "/cart" | relURL }}" class="nav-link cart-link{{ if eq .RelPermalink "/cart/" }} active{{ end }}">
                     Cart (<span id="cart-count">0</span>)
