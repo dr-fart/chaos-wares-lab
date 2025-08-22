@@ -9,27 +9,27 @@ const DeviceDetector = {
     getPerformanceProfile() {
         if (this.isMobile || this.isLowEnd) {
             return {
-                particleCount: Math.min(150, Math.floor(window.innerWidth * window.innerHeight / 3000)),
-                updateFrequency: 2, // Update every 2nd frame
-                velocityMultiplier: 5.5, // Much higher velocity compensation
+                particleCount: Math.min(40, Math.floor(window.innerWidth * window.innerHeight / 8000)),
+                updateFrequency: 4,
+                velocityMultiplier: 8.0, // Increased from 5.5 for faster motion
                 trailOpacity: 0.4,
-                noiseComplexity: 0.15, // Increased for more dynamic movement
-                velocityDamping: 0.82, // Even less damping for more speed
-                timeScale: 4.0, // Much faster time progression
-                maxVelocity: 8.0, // Much higher velocity cap
-                positionScale: 4.5 // Scale position updates much more aggressively
+                noiseComplexity: 0.15,
+                velocityDamping: 0.82,
+                timeScale: 6.0, // Increased from 4.0 for faster time progression
+                maxVelocity: 12.0, // Increased from 8.0 for higher speeds
+                positionScale: 6.5 // Increased from 4.5 for more movement
             };
         }
         return {
-            particleCount: Math.min(400, Math.floor(window.innerWidth * window.innerHeight / 1200)),
-            updateFrequency: 1, // Update every frame
-            velocityMultiplier: 1.0,
+            particleCount: Math.min(100, Math.floor(window.innerWidth * window.innerHeight / 4000)),
+            updateFrequency: 3,
+            velocityMultiplier: 2.5, // Increased from 1.0 for faster motion
             trailOpacity: 0.25,
             noiseComplexity: 0.08,
             velocityDamping: 0.94,
-            timeScale: 1.0,
-            maxVelocity: 2.0,
-            positionScale: 1.0
+            timeScale: 2.5, // Increased from 1.0 for faster time progression
+            maxVelocity: 5.0, // Increased from 2.0 for higher speeds
+            positionScale: 2.5 // Increased from 1.0 for more movement
         };
     }
 };
@@ -229,7 +229,7 @@ class SwarmParticle {
         this.p.y = this.t.y = Math.random() * this.bounds.y;
         this.v.set(0, 0, 0); // Start with zero velocity
         this.life = 0;
-        this.maxLife = 2000 + Math.random() * 3000;
+        this.maxLife = 3000 + Math.random() * 6000; // Increased range from 2000-5000 to 3000-9000 for more staggered regeneration
         this.hue = Math.random() * 360;
     }
     
@@ -281,15 +281,21 @@ class SwarmParticle {
     }
     
     render(context) {
+        // Offscreen culling optimization - don't render particles outside viewport
+        if (this.p.x < -50 || this.p.x > this.bounds.x + 50 || 
+            this.p.y < -50 || this.p.y > this.bounds.y + 50) {
+            return;
+        }
+        
         const alpha = Math.max(0.1, 1 - (this.life / this.maxLife));
         const speed = Math.sqrt(this.v.x * this.v.x + this.v.y * this.v.y);
         const brightness = Math.min(70, 40 + speed * 10);
-        const radius = Math.max(4, speed * 6 + 3); // Large circular particles
+        const radius = Math.max(12, speed * 18 + 8); // Increased from 8 and 12 to 12 and 18 - even bigger particles
         
         // Create radial gradient for glow effect
         const gradient = context.createRadialGradient(
             this.p.x, this.p.y, 0,
-            this.p.x, this.p.y, radius * 2
+            this.p.x, this.p.y, radius * 3 // Increased glow radius multiplier from 2.5 to 3
         );
         
         gradient.addColorStop(0, `hsla(${this.hue}, 75%, ${brightness}%, ${alpha * 0.9})`);
@@ -311,20 +317,115 @@ class HeroPhysicsBackground {
         this.noise = new SimplexNoise();
         this.animationId = null;
         this.frameCount = 0;
+        this.lastInteractionTime = Date.now();
+        this.isPaused = false;
+        this.pauseTimeout = 60000; // Reverted back to 60 seconds as user prefers
+        this.pauseIndicator = null;
         
         // Get performance profile based on device
         this.profile = DeviceDetector.getPerformanceProfile();
         
         this.bounds = new Vector3D();
         this.resize = this.resize.bind(this);
+        this.handleUserActivity = this.handleUserActivity.bind(this);
         
         this.setupCanvas();
         this.createParticles();
+        this.setupActivityListeners();
+        this.createPauseIndicator();
         this.animate();
         
         window.addEventListener('resize', this.resize);
     }
     
+    setupActivityListeners() {
+        // Listen for user activity to reset pause timer
+        const events = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+        events.forEach(event => {
+            document.addEventListener(event, this.handleUserActivity, { passive: true });
+        });
+    }
+    
+    handleUserActivity() {
+        this.lastInteractionTime = Date.now();
+        if (this.isPaused) {
+            this.isPaused = false;
+            this.hidePauseIndicator();
+            console.log('Particle animation resumed');
+        }
+    }
+    
+    checkForPause() {
+        const timeSinceLastActivity = Date.now() - this.lastInteractionTime;
+        if (!this.isPaused && timeSinceLastActivity > this.pauseTimeout) {
+            this.isPaused = true;
+            this.showPauseIndicator();
+            console.log('Particle animation paused due to inactivity');
+        }
+    }
+
+    createPauseIndicator() {
+        // Create pause indicator overlay
+        this.pauseIndicator = document.createElement('div');
+        
+        // Get canvas position to constrain notification to hero area
+        const canvasRect = this.canvas.getBoundingClientRect();
+        
+        this.pauseIndicator.style.cssText = `
+            position: fixed;
+            top: ${canvasRect.top + 20}px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(45, 60, 85, 0.95);
+            color: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: 2px solid rgba(100, 150, 255, 0.4);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 13px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(100, 150, 255, 0.2);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            pointer-events: none;
+            min-width: 280px;
+            white-space: nowrap;
+        `;
+        
+        this.pauseIndicator.innerHTML = `
+            ⏸️ Simulation paused - interact to resume
+        `;
+        
+        // Append to document body without modifying canvas parent
+        document.body.appendChild(this.pauseIndicator);
+        console.log('Pause indicator created and added to hero section');
+    }
+
+    showPauseIndicator() {
+        if (this.pauseIndicator) {
+            // Update position in case canvas moved
+            const canvasRect = this.canvas.getBoundingClientRect();
+            this.pauseIndicator.style.top = `${canvasRect.top + 20}px`;
+            
+            console.log('Showing pause indicator');
+            this.pauseIndicator.style.opacity = '1';
+            this.pauseIndicator.style.visibility = 'visible';
+        } else {
+            console.log('Pause indicator not found when trying to show');
+        }
+    }
+    
+    hidePauseIndicator() {
+        if (this.pauseIndicator) {
+            console.log('Hiding pause indicator');
+            this.pauseIndicator.style.opacity = '0';
+            this.pauseIndicator.style.visibility = 'hidden';
+        }
+    }
+
     setupCanvas() {
         const rect = this.canvas.getBoundingClientRect();
         const dpr = Math.min(window.devicePixelRatio || 1, DeviceDetector.isMobile ? 1.5 : 2);
@@ -336,6 +437,19 @@ class HeroPhysicsBackground {
         
         this.ctx.scale(dpr, dpr);
         this.bounds.set(rect.width, rect.height, 0);
+        
+        // Add shadow behind gradient text using filter instead of text-shadow
+        const heroTitle = document.querySelector('.hero h1, .hero .hero-title, .hero-section h1, .hero-section .hero-title');
+        const heroTextElements = document.querySelectorAll('.hero h2, .hero h3, .hero p, .hero .hero-subtitle, .hero-section h2, .hero-section h3, .hero-section p, .hero-section .hero-subtitle');
+        
+        if (heroTitle) {
+            heroTitle.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))';
+        }
+        
+        // Apply drop-shadow to all other hero text elements
+        heroTextElements.forEach(element => {
+            element.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))';
+        });
     }
     
     resize() {
@@ -356,6 +470,14 @@ class HeroPhysicsBackground {
     draw() {
         const currentTime = Date.now();
         
+        // Check if we should pause the animation
+        this.checkForPause();
+        
+        // Skip rendering entirely if paused for maximum CPU savings
+        if (this.isPaused) {
+            return;
+        }
+        
         // Clear with fade effect matching hero background
         this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.fillStyle = `rgba(26, 35, 50, ${this.profile.trailOpacity})`;
@@ -368,6 +490,9 @@ class HeroPhysicsBackground {
         this.frameCount++;
         const shouldUpdate = this.frameCount % this.profile.updateFrequency === 0;
         
+        // Batch canvas operations for better performance
+        this.ctx.save();
+        
         for (let particle of this.particles) {
             if (shouldUpdate) {
                 particle.step(currentTime);
@@ -375,6 +500,7 @@ class HeroPhysicsBackground {
             particle.render(this.ctx);
         }
         
+        this.ctx.restore();
         this.ctx.globalCompositeOperation = 'source-over';
     }
     
@@ -388,6 +514,17 @@ class HeroPhysicsBackground {
             cancelAnimationFrame(this.animationId);
         }
         window.removeEventListener('resize', this.resize);
+        
+        // Remove activity listeners
+        const events = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+        events.forEach(event => {
+            document.removeEventListener(event, this.handleUserActivity);
+        });
+        
+        // Remove pause indicator
+        if (this.pauseIndicator && this.pauseIndicator.parentNode) {
+            this.pauseIndicator.parentNode.removeChild(this.pauseIndicator);
+        }
     }
 }
 

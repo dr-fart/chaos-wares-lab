@@ -30,10 +30,10 @@
             </a>
             
             <ul class="nav-menu">
-                <li><a href="../about" class="nav-link">About</a></li>
                 <li><a href="../products" class="nav-link">Products</a></li>
-                <li><a href="../explore" class="nav-link">Explore</a></li>
+                <li><a href="../about" class="nav-link">About</a></li>
                 <li><a href="../support" class="nav-link">Support</a></li>
+                <li><a href="../explore" class="nav-link">Explore</a></li>
                 <li><a href="../login" class="nav-link">Login</a></li>
                 <li><a href="../cart" class="nav-link cart-link">
                     Cart (<span id="cart-count">0</span>)
@@ -83,7 +83,23 @@
                     <label for="cvc">CVC</label>
                     <input type="text" id="cvc" name="cvc" placeholder="123" required>
                 </div>
-                <button type="submit" class="btn cta-button">Place Order</button>
+                <div class="form-group">
+                    <label for="cardholder-name">Cardholder Name</label>
+                    <input type="text" id="cardholder-name" name="cardholderName" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="billing-address">Billing Address</label>
+                    <input type="text" id="billing-address" name="billingAddress" placeholder="123 Main St" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" placeholder="San Francisco" required>
+                </div>
+                <div class="form-group">
+                    <label for="zip">ZIP Code</label>
+                    <input type="text" id="zip" name="zip" placeholder="94102" required>
+                </div>
+                <button type="submit" class="btn cta-button">Complete Order</button>
             </form>
         </div>
     </div>
@@ -140,87 +156,7 @@
     
     <script src="../js/main.js"></script>
     
-<script>
-
-function loadCart() {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const cartItemsContainer = document.getElementById('checkout-cart-items');
-    const cartTotalElement = document.getElementById('checkout-cart-total');
-    
-    if (cart.length === 0) {
-        cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
-        cartTotalElement.textContent = 'Total: $0.00';
-        return;
-    }
-    
-    let total = 0;
-    cartItemsContainer.innerHTML = '';
-    
-    cart.forEach(item => {
-        const itemTotal = item.price * item.quantity;
-        const cartItem = document.createElement('div');
-        cartItem.className = 'cart-item';
-        cartItem.innerHTML = `
-            <div class="cart-item-info">
-                <h4>${item.name}</h4>
-                <p>SKU: ${item.sku}</p>
-                <p>Quantity: ${item.quantity}</p>
-            </div>
-            <div class="cart-item-price">$${itemTotal.toFixed(2)}</div>
-        `;
-        cartItemsContainer.appendChild(cartItem);
-        total += itemTotal;
-    });
-    
-    cartTotalElement.textContent = `Total: $${total.toFixed(2)}`;
-}
-
-
-document.getElementById('checkout-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    
-    if (cart.length === 0) {
-        alert('Your cart is empty!');
-        return;
-    }
-    
-    const formData = {
-        items: cart,
-        payment: {
-            cardNumber: document.getElementById('card-number').value,
-            expiry: document.getElementById('expiry').value,
-            cvc: document.getElementById('cvc').value
-        }
-    };
-    
-    try {
-        const response = await fetch('/api/v1/cart/checkout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        });
-        
-        if (response.ok) {
-            alert('Order placed successfully!');
-            localStorage.removeItem('cart');
-            updateCartCount();
-            window.location.href = '/';
-        } else {
-            alert('Checkout failed. Please try again.');
-        }
-    } catch (error) {
-        console.error('Checkout error:', error);
-        alert('Checkout request failed. Please try again.');
-    }
-});
-
-
-document.addEventListener('DOMContentLoaded', loadCart);
-</script>
+<script src="../js/checkout.js"></script>
 
 </body>
 </html>
