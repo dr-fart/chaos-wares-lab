@@ -1,18 +1,35 @@
-<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+<svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="chaosGradient" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" style="stop-color:#00f5d4;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0066cc;stop-opacity:1" />
-    </radialGradient>
+    <linearGradient id="faviconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4ECDC4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#45B7D1;stop-opacity:1" />
+    </linearGradient>
   </defs>
   
-  <!-- Background circle -->
-  <circle cx="16" cy="16" r="15" fill="url(#chaosGradient)" stroke="#ffffff" stroke-width="1"/>
+  <!-- Main flowing curves that create the organic pattern -->
+  <path d="M15,50 Q25,20 40,35 Q55,50 70,25 Q85,40 75,60 Q60,75 45,60 Q30,45 25,70 Q15,85 5,65 Q10,45 15,50 Z" 
+        fill="none" 
+        stroke="url(#faviconGradient)" 
+        stroke-width="6" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
   
-  <!-- Chaos symbol - stylized wave interference pattern -->
-  <path d="M8,16 Q12,10 16,16 Q20,22 24,16" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.9"/>
-  <path d="M8,16 Q12,22 16,16 Q20,10 24,16" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.7"/>
+  <!-- Secondary flowing line for depth -->
+  <path d="M25,30 Q40,15 55,30 Q70,45 85,30 Q90,45 80,60 Q65,75 50,60 Q35,45 20,60 Q10,75 15,55 Q20,40 25,30" 
+        fill="none" 
+        stroke="url(#faviconGradient)" 
+        stroke-width="4" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        opacity="0.7"/>
   
-  <!-- Central dot -->
-  <circle cx="16" cy="16" r="2" fill="#ffffff" opacity="0.8"/>
+  <!-- Inner flowing accent -->
+  <path d="M35,40 Q45,30 55,40 Q65,50 75,40 Q80,50 70,60 Q60,70 50,60 Q40,50 30,60 Q25,50 35,40" 
+        fill="none" 
+        stroke="url(#faviconGradient)" 
+        stroke-width="3" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        opacity="0.5"/>
 </svg>
