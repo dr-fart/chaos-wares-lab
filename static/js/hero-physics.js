@@ -1,20 +1,21 @@
 // Hero Physics Background - Particle Swarm with Simplex Noise
 // Organic, flowing particle system inspired by magnetic field recreation
 
-// Mobile detection utility
+// Device detection and performance profiling
 const DeviceDetector = {
     isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
     isLowEnd: navigator.hardwareConcurrency <= 4 || navigator.deviceMemory <= 4,
     
+    // Returns optimized settings based on device capabilities
     getPerformanceProfile() {
         if (this.isMobile || this.isLowEnd) {
             return {
                 particleCount: Math.min(40, Math.floor(window.innerWidth * window.innerHeight / 8000)),
-                updateFrequency: 3, // Reduced from 4 to 3 for smoother motion
+                updateFrequency: 3, // Update every 3 frames for smoother motion on low-end devices
                 velocityMultiplier: 8.0,
                 trailOpacity: 0.4,
                 noiseComplexity: 0.15,
-                velocityDamping: 0.88, // Increased from 0.82 for smoother transitions between updates
+                velocityDamping: 0.88, // Higher damping for smoother transitions
                 timeScale: 6.0,
                 maxVelocity: 12.0,
                 positionScale: 6.5
@@ -34,6 +35,7 @@ const DeviceDetector = {
     }
 };
 
+// 3D vector class for particle positions and velocities
 class Vector3D {
     constructor(x = 0, y = 0, z = 0) {
         this.x = x;
@@ -48,6 +50,7 @@ class Vector3D {
         return this;
     }
     
+    // Vector operations - support both vectors and scalars
     add(other) {
         if (typeof other === 'number') {
             this.x += other;
@@ -106,6 +109,15 @@ class Vector3D {
         return this;
     }
     
+    // Efficient vector copying (optimized for performance)
+    copyFrom(other) {
+        this.x = other.x;
+        this.y = other.y;
+        this.z = other.z;
+        return this;
+    }
+    
+    // Handle screen wrapping for particles that move off-screen
     wrap2d(bounds) {
         if (this.x > bounds.x) {
             this.x = 0;
@@ -127,8 +139,10 @@ class Vector3D {
     }
 }
 
+// Simplex noise generator for organic particle movement
 class SimplexNoise {
     constructor() {
+        // Gradient vectors and permutation table for 3D noise generation
         this.grad3 = [
             new Vector3D(1,1,0), new Vector3D(-1,1,0), new Vector3D(1,-1,0), new Vector3D(-1,-1,0),
             new Vector3D(1,0,1), new Vector3D(-1,0,1), new Vector3D(1,0,-1), new Vector3D(-1,0,-1),
@@ -157,6 +171,7 @@ class SimplexNoise {
         return grad.x * x + grad.y * y + grad.z * z;
     }
     
+    // Generate 3D simplex noise - creates organic flowing patterns
     simplex3d(x, y, z) {
         let n0, n1, n2, n3;
         let s = (x + y + z) * this.F3;
@@ -210,11 +225,13 @@ class SimplexNoise {
     }
 }
 
+// Individual particle in the swarm system
 class SwarmParticle {
     constructor(bounds, noise, profile) {
-        this.p = new Vector3D(); // position
-        this.t = new Vector3D(); // trail position
-        this.v = new Vector3D(); // velocity
+        this.p = new Vector3D(); // Current position
+        this.t = new Vector3D(); // Trail position
+        this.v = new Vector3D(); // Velocity
+        this._tempVector = new Vector3D(); // Reusable temp vector to avoid allocations
         this.bounds = bounds;
         this.noise = noise;
         this.life = 0;
@@ -224,78 +241,82 @@ class SwarmParticle {
         this.reset();
     }
     
+    // Reset particle with random position and fresh lifecycle
     reset() {
         this.p.x = this.t.x = Math.random() * this.bounds.x;
         this.p.y = this.t.y = Math.random() * this.bounds.y;
-        this.v.set(0, 0, 0); // Start with zero velocity
+        this.v.set(0, 0, 0);
         this.life = 0;
-        this.maxLife = 3000 + Math.random() * 6000; // Increased range from 2000-5000 to 3000-9000 for more staggered regeneration
+        this.maxLife = 3000 + Math.random() * 6000; // 3-9 second lifespan
         this.hue = Math.random() * 360;
     }
     
+    // Update particle physics - the core movement logic
     step(time) {
-        if (this.life++ > this.maxLife) {
+        if (++this.life > this.maxLife) {
             this.reset();
+            return;
         }
         
         // Sample noise field for organic movement
-        const xx = this.p.x / 200; // Larger scale for smoother movement
-        const yy = this.p.y / 200;
-        const zz = time / 15000 * this.profile.timeScale; // Adjust time progression
+        const scale = 1/200;
+        const xx = this.p.x * scale;
+        const yy = this.p.y * scale;
+        const zz = time * this.profile.timeScale / 15000; // Time creates flow
         
-        // Add some randomness
+        // Apply damping to prevent runaway acceleration
+        this.v.mul(this.profile.velocityDamping);
+        
+        // Combine random forces with noise-based movement
         const angle = Math.random() * Math.PI * 2;
-        const randomForce = Math.random() / 50 * this.profile.velocityMultiplier; // Scale random force
+        const randomForce = Math.random() * this.profile.velocityMultiplier / 50;
         
-        // Apply velocity damping first to prevent buildup
-        this.v.mul(this.profile.velocityDamping); // Adjust damping
-        
-        // Calculate velocity based on noise - much more gentle
         this.v.x += randomForce * Math.sin(angle) + this.noise.simplex3d(xx, yy, -zz) * this.profile.noiseComplexity;
         this.v.y += randomForce * Math.cos(angle) + this.noise.simplex3d(xx, yy, zz) * this.profile.noiseComplexity;
         
-        // Limit velocity to maintain visual speed parity
-        const speed = Math.sqrt(this.v.x * this.v.x + this.v.y * this.v.y);
-        if (speed > this.profile.maxVelocity) {
-            this.v.mul(this.profile.maxVelocity / speed);
+        // Velocity limiting with optimized squared comparison
+        const speedSq = this.v.x * this.v.x + this.v.y * this.v.y;
+        const maxVelSq = this.profile.maxVelocity * this.profile.maxVelocity;
+        if (speedSq > maxVelSq) {
+            const scale = this.profile.maxVelocity / Math.sqrt(speedSq);
+            this.v.mul(scale);
         }
         
-        // Store current position for trail
-        this.p.move(this.t);
+        this.t.copyFrom(this.p);
         
-        // Apply velocity with scaling - create new vector to avoid modifying original
-        const scaledVelocity = new Vector3D(
+        // Apply velocity using temp vector to avoid allocations
+        this._tempVector.set(
             this.v.x * this.profile.positionScale,
             this.v.y * this.profile.positionScale,
-            this.v.z * this.profile.positionScale
+            0
         );
-        this.p.add(scaledVelocity);
+        this.p.add(this._tempVector);
         
-        // Wrap around edges
         if (this.p.wrap2d(this.bounds)) {
             this.reset();
         }
         
-        // Slowly change hue
-        this.hue = (this.hue + 0.1) % 360; // Slower color change
+        this.hue = (this.hue + 0.1) % 360; // Slow color shift
     }
     
+    // Render particle with dynamic glow effect
     render(context) {
-        // Offscreen culling optimization - don't render particles outside viewport
+        // Offscreen culling for performance
         if (this.p.x < -50 || this.p.x > this.bounds.x + 50 || 
             this.p.y < -50 || this.p.y > this.bounds.y + 50) {
             return;
         }
         
+        // Visual properties based on particle state
         const alpha = Math.max(0.1, 1 - (this.life / this.maxLife));
         const speed = Math.sqrt(this.v.x * this.v.x + this.v.y * this.v.y);
-        const brightness = Math.min(70, 40 + speed * 10);
-        const radius = Math.max(12, speed * 18 + 8); // Increased from 8 and 12 to 12 and 18 - even bigger particles
+        const brightness = Math.min(70, 40 + speed * 10); // Faster = brighter
+        const radius = Math.max(12, speed * 18 + 8); // Faster = larger
         
-        // Create radial gradient for glow effect
+        // Create glow gradient
         const gradient = context.createRadialGradient(
             this.p.x, this.p.y, 0,
-            this.p.x, this.p.y, radius * 3 // Increased glow radius multiplier from 2.5 to 3
+            this.p.x, this.p.y, radius * 3
         );
         
         gradient.addColorStop(0, `hsla(${this.hue}, 75%, ${brightness}%, ${alpha * 0.9})`);
@@ -309,6 +330,7 @@ class SwarmParticle {
     }
 }
 
+// Main system that orchestrates the particle simulation
 class HeroPhysicsBackground {
     constructor(canvas) {
         this.canvas = canvas;
@@ -319,27 +341,31 @@ class HeroPhysicsBackground {
         this.frameCount = 0;
         this.lastInteractionTime = Date.now();
         this.isPaused = false;
-        this.pauseTimeout = 60000; // Reverted back to 60 seconds as user prefers
+        this.pauseTimeout = 60000; // Pause after 1 minute of inactivity
         this.pauseIndicator = null;
+        this.isDestroyed = false;
+        this.resizeTimeout = null;
         
-        // Get performance profile based on device
         this.profile = DeviceDetector.getPerformanceProfile();
-        
         this.bounds = new Vector3D();
+        
+        // Bind methods for proper context
         this.resize = this.resize.bind(this);
         this.handleUserActivity = this.handleUserActivity.bind(this);
+        this.animate = this.animate.bind(this);
         
+        // Initialize everything
         this.setupCanvas();
         this.createParticles();
         this.setupActivityListeners();
         this.createPauseIndicator();
         this.animate();
         
-        window.addEventListener('resize', this.resize);
+        window.addEventListener('resize', this.resize, { passive: true });
     }
     
+    // Listen for user activity to manage pause state
     setupActivityListeners() {
-        // Listen for user activity to reset pause timer
         const events = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
         events.forEach(event => {
             document.addEventListener(event, this.handleUserActivity, { passive: true });
@@ -347,153 +373,220 @@ class HeroPhysicsBackground {
     }
     
     handleUserActivity() {
+        if (this.isDestroyed) return;
+        
         this.lastInteractionTime = Date.now();
         if (this.isPaused) {
             this.isPaused = false;
             this.hidePauseIndicator();
-            console.log('Particle animation resumed');
         }
     }
     
+    // Auto-pause after inactivity to save resources
     checkForPause() {
+        if (this.isDestroyed) return;
+        
         const timeSinceLastActivity = Date.now() - this.lastInteractionTime;
         if (!this.isPaused && timeSinceLastActivity > this.pauseTimeout) {
             this.isPaused = true;
             this.showPauseIndicator();
-            console.log('Particle animation paused due to inactivity');
         }
     }
 
+    // Create pause notification UI
     createPauseIndicator() {
-        // Create pause indicator overlay
-        this.pauseIndicator = document.createElement('div');
-        
-        // Get canvas position to constrain notification to hero area
-        const canvasRect = this.canvas.getBoundingClientRect();
-        
-        this.pauseIndicator.style.cssText = `
-            position: fixed;
-            top: ${canvasRect.top + 20}px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(45, 60, 85, 0.95);
-            color: rgba(255, 255, 255, 0.95);
-            padding: 10px 20px;
-            border-radius: 6px;
-            border: 2px solid rgba(100, 150, 255, 0.4);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            font-size: 13px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(100, 150, 255, 0.2);
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            pointer-events: none;
-            min-width: 280px;
-            white-space: nowrap;
-        `;
-        
-        this.pauseIndicator.innerHTML = `
-            ⏸️ Simulation paused - interact to resume
-        `;
-        
-        // Append to document body without modifying canvas parent
-        document.body.appendChild(this.pauseIndicator);
-        console.log('Pause indicator created and added to hero section');
+        try {
+            this.pauseIndicator = document.createElement('div');
+            const canvasRect = this.canvas.getBoundingClientRect();
+            
+            this.pauseIndicator.style.cssText = `
+                position: fixed;
+                top: ${canvasRect.top + 20}px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(45, 60, 85, 0.95);
+                color: rgba(255, 255, 255, 0.95);
+                padding: 10px 20px;
+                border-radius: 6px;
+                border: 2px solid rgba(100, 150, 255, 0.4);
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                font-size: 13px;
+                text-align: center;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(100, 150, 255, 0.2);
+                z-index: 9999;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+                pointer-events: none;
+                min-width: 280px;
+                white-space: nowrap;
+            `;
+            
+            this.pauseIndicator.innerHTML = '⏸️ Simulation paused - interact to resume';
+            document.body.appendChild(this.pauseIndicator);
+        } catch (error) {
+            console.warn('Failed to create pause indicator:', error);
+        }
     }
 
     showPauseIndicator() {
         if (this.pauseIndicator) {
-            // Update position in case canvas moved
-            const canvasRect = this.canvas.getBoundingClientRect();
-            this.pauseIndicator.style.top = `${canvasRect.top + 20}px`;
-            
-            console.log('Showing pause indicator');
-            this.pauseIndicator.style.opacity = '1';
-            this.pauseIndicator.style.visibility = 'visible';
-        } else {
-            console.log('Pause indicator not found when trying to show');
+            try {
+                const canvasRect = this.canvas.getBoundingClientRect();
+                this.pauseIndicator.style.top = `${canvasRect.top + 20}px`;
+                this.pauseIndicator.style.opacity = '1';
+                this.pauseIndicator.style.visibility = 'visible';
+            } catch (error) {
+                console.warn('Failed to show pause indicator:', error);
+            }
         }
     }
     
     hidePauseIndicator() {
         if (this.pauseIndicator) {
-            console.log('Hiding pause indicator');
-            this.pauseIndicator.style.opacity = '0';
-            this.pauseIndicator.style.visibility = 'hidden';
+            try {
+                this.pauseIndicator.style.opacity = '0';
+                this.pauseIndicator.style.visibility = 'hidden';
+            } catch (error) {
+                console.warn('Failed to hide pause indicator:', error);
+            }
         }
     }
 
+    // Set up canvas for high-DPI rendering
     setupCanvas() {
-        const rect = this.canvas.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const heroHeight = Math.max(viewportHeight * 0.6, 400);
+        
         const dpr = Math.min(window.devicePixelRatio || 1, DeviceDetector.isMobile ? 1.5 : 2);
         
-        this.canvas.width = rect.width * dpr;
-        this.canvas.height = rect.height * dpr;
-        this.canvas.style.width = rect.width + 'px';
-        this.canvas.style.height = rect.height + 'px';
+        this.canvas.width = viewportWidth * dpr;
+        this.canvas.height = heroHeight * dpr;
+        this.canvas.style.width = viewportWidth + 'px';
+        this.canvas.style.height = heroHeight + 'px';
         
         this.ctx.scale(dpr, dpr);
-        this.bounds.set(rect.width, rect.height, 0);
+        this.bounds.set(viewportWidth, heroHeight, 0);
         
-        // Add shadow behind gradient text using filter instead of text-shadow
-        const heroTitle = document.querySelector('.hero h1, .hero .hero-title, .hero-section h1, .hero-section .hero-title');
-        const heroTextElements = document.querySelectorAll('.hero h2, .hero h3, .hero p, .hero .hero-subtitle, .hero-section h2, .hero-section h3, .hero-section p, .hero-section .hero-subtitle');
-        
-        if (heroTitle) {
-            heroTitle.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))';
+        // Enhance text readability with shadows
+        try {
+            const heroTitle = document.querySelector('.hero h1, .hero .hero-title, .hero-section h1, .hero-section .hero-title');
+            const heroTextElements = document.querySelectorAll('.hero h2, .hero h3, .hero p, .hero .hero-subtitle, .hero-section h2, .hero-section h3, .hero-section p, .hero-section .hero-subtitle');
+            
+            if (heroTitle) {
+                heroTitle.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))';
+                heroTitle.style.userSelect = 'none';
+            }
+            
+            heroTextElements.forEach(element => {
+                element.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))';
+                element.style.userSelect = 'none';
+            });
+        } catch (error) {
+            console.warn('Failed to apply text shadows:', error);
         }
-        
-        // Apply drop-shadow to all other hero text elements
-        heroTextElements.forEach(element => {
-            element.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))';
-        });
-    }
-    
-    resize() {
-        this.setupCanvas();
-        // Recreate particles with new count for new screen size
-        this.particles = [];
-        this.createParticles();
     }
     
     createParticles() {
         const particleCount = this.profile.particleCount;
+        this.particles = [];
         
         for (let i = 0; i < particleCount; i++) {
             this.particles.push(new SwarmParticle(this.bounds, this.noise, this.profile));
         }
     }
     
-    draw() {
-        const currentTime = Date.now();
+    // Handle window resize with intelligent particle scaling
+    resize() {
+        if (this.isDestroyed) return;
         
-        // Check if we should pause the animation
-        this.checkForPause();
-        
-        // Skip rendering entirely if paused for maximum CPU savings
-        if (this.isPaused) {
-            return;
+        if (this.resizeTimeout) {
+            clearTimeout(this.resizeTimeout);
         }
         
-        // Clear with fade effect matching hero background
+        // Throttle resize events
+        this.resizeTimeout = setTimeout(() => {
+            if (this.isDestroyed) return;
+            
+            requestAnimationFrame(() => {
+                const oldBounds = { x: this.bounds.x, y: this.bounds.y };
+                
+                this.profile = DeviceDetector.getPerformanceProfile();
+                this.setupCanvas();
+                
+                // Scale existing particles proportionally
+                if (this.particles.length > 0 && oldBounds.x > 0 && oldBounds.y > 0) {
+                    const scaleX = this.bounds.x / oldBounds.x;
+                    const scaleY = this.bounds.y / oldBounds.y;
+                    
+                    this.particles.forEach(particle => {
+                        particle.p.x *= scaleX;
+                        particle.p.y *= scaleY;
+                        particle.bounds = this.bounds;
+                        
+                        if (particle.p.x < 0 || particle.p.x > this.bounds.x || 
+                            particle.p.y < 0 || particle.p.y > this.bounds.y) {
+                            particle.reset();
+                        }
+                    });
+                    
+                    // Adjust particle count for new viewport size
+                    const newParticleCount = this.profile.particleCount;
+                    const currentCount = this.particles.length;
+                    
+                    if (newParticleCount > currentCount) {
+                        const particlesToAdd = newParticleCount - currentCount;
+                        for (let i = 0; i < particlesToAdd; i++) {
+                            const newParticle = new SwarmParticle(this.bounds, this.noise, this.profile);
+                            newParticle.life = Math.random() * newParticle.maxLife;
+                            this.particles.push(newParticle);
+                        }
+                    } else if (newParticleCount < currentCount) {
+                        // Keep particles closest to center
+                        const centerX = this.bounds.x * 0.5;
+                        const centerY = this.bounds.y * 0.5;
+                        
+                        this.particles.sort((a, b) => {
+                            const distA = (a.p.x - centerX) ** 2 + (a.p.y - centerY) ** 2;
+                            const distB = (b.p.x - centerX) ** 2 + (b.p.y - centerY) ** 2;
+                            return distA - distB;
+                        });
+                        
+                        this.particles.length = newParticleCount;
+                    }
+                } else {
+                    this.createParticles();
+                }
+            });
+        }, 16);
+    }
+    
+    // Main render loop with performance optimizations
+    draw() {
+        if (this.isDestroyed) return;
+        
+        const currentTime = Date.now();
+        this.checkForPause();
+        
+        if (this.isPaused) return; // Skip rendering when paused
+        
+        // Clear with fade effect for trails
         this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.fillStyle = `rgba(26, 35, 50, ${this.profile.trailOpacity})`;
         this.ctx.fillRect(0, 0, this.bounds.x, this.bounds.y);
         
-        // Set blend mode for particle trails
+        // Additive blending for glow effects
         this.ctx.globalCompositeOperation = 'lighter';
         
-        // Update and render particles based on update frequency
+        // Throttled updates based on device performance
         this.frameCount++;
         const shouldUpdate = this.frameCount % this.profile.updateFrequency === 0;
         
-        // Batch canvas operations for better performance
         this.ctx.save();
         
-        for (let particle of this.particles) {
+        for (const particle of this.particles) {
             if (shouldUpdate) {
                 particle.step(currentTime);
             }
@@ -505,34 +598,52 @@ class HeroPhysicsBackground {
     }
     
     animate() {
+        if (this.isDestroyed) return;
+        
         this.draw();
-        this.animationId = requestAnimationFrame(() => this.animate());
+        this.animationId = requestAnimationFrame(this.animate);
     }
     
+    // Clean up all resources
     destroy() {
+        this.isDestroyed = true;
+        
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
+            this.animationId = null;
         }
+        
+        if (this.resizeTimeout) {
+            clearTimeout(this.resizeTimeout);
+            this.resizeTimeout = null;
+        }
+        
         window.removeEventListener('resize', this.resize);
         
-        // Remove activity listeners
         const events = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
         events.forEach(event => {
             document.removeEventListener(event, this.handleUserActivity);
         });
         
-        // Remove pause indicator
         if (this.pauseIndicator && this.pauseIndicator.parentNode) {
             this.pauseIndicator.parentNode.removeChild(this.pauseIndicator);
+            this.pauseIndicator = null;
         }
+        
+        // Clear references for garbage collection
+        this.particles = [];
+        this.canvas = null;
+        this.ctx = null;
+        this.noise = null;
+        this.bounds = null;
+        this.profile = null;
     }
 }
 
-// Initialize hero physics background
+// Initialize the physics background system
 function initHeroPhysics() {
     const canvas = document.getElementById('hero-physics');
     if (canvas) {
-        console.log('Initializing particle swarm background...');
         new HeroPhysicsBackground(canvas);
     } else {
         console.warn('Hero physics canvas not found');
